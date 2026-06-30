@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import type { Platform, UserProfileSummary } from "@/types";
 import { VerifiedBadge } from "./VerifiedBadge";
+import { useSelectedProfilesStore } from "@/store/useSelectedProfilesStore";
 
 interface ProfileCardProps {
   profile: UserProfileSummary;
@@ -22,6 +23,8 @@ export function ProfileCard({
   onProfileClick,
 }: ProfileCardProps) {
   const navigate = useNavigate();
+  const { addProfile, isSelected } = useSelectedProfilesStore();
+  const selected = isSelected(profile.username);
 
   const handleClick = () => {
     if (onProfileClick) onProfileClick(profile.username);
@@ -46,12 +49,19 @@ export function ProfileCard({
       {/* TODO: candidates must implement Add to List feature */}
       {/* TODO: candidates must implement Add to List feature */}
       <button
-        disabled
-        className="px-3 py-1 bg-gray-300 text-gray-500 text-sm rounded cursor-not-allowed"
-        onClick={(e) => e.stopPropagation()}
-      >
-        Add to List
-      </button>
+  onClick={(e) => {
+    e.stopPropagation();
+    addProfile(profile);
+  }}
+  disabled={selected}
+  className={`px-3 py-1 rounded text-sm transition ${
+    selected
+      ? "bg-green-500 text-white cursor-not-allowed"
+      : "bg-blue-600 text-white hover:bg-blue-700"
+  }`}
+>
+  {selected ? "Added" : "Add to List"}
+</button>
     </div>
   );
 }

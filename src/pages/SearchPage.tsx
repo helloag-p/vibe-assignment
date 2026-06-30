@@ -4,6 +4,7 @@ import { Layout } from "@/components/Layout";
 import { PlatformFilter } from "@/components/PlatformFilter";
 import { ProfileList } from "@/components/ProfileList";
 import { extractProfiles, filterProfiles } from "@/utils/dataHelpers";
+import { SelectedProfiles } from "@/components/SelectedProfiles";
 
 export function SearchPage() {
   const [platform, setPlatform] = useState<Platform>("instagram");
@@ -38,12 +39,20 @@ export function SearchPage() {
         Showing {filtered.length} of {allProfiles.length} on {platform}
       </p>
 
-      <ProfileList
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <div className="lg:col-span-2">
+        <ProfileList
         profiles={filtered}
         platform={platform}
         searchQuery={searchQuery}
         onProfileClick={handleProfileClick}
       />
+    </div>
+
+    <SelectedProfiles />
+
+</div>
     </Layout>
   );
 }
