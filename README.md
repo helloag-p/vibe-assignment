@@ -179,7 +179,7 @@ If given more time, I would implement:
 Clone the repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/helloag-p/vibe-assignment
 ```
 
 Install dependencies
@@ -219,12 +219,28 @@ npm run lint
 Example:
 
 ```
-https://your-project.vercel.app
+https://vibe-assignment.vercel.app/
 ```
 
 ---
 
 ## 📸 Screenshots
+
+### Dashboard
+
+![Dashboard](./screenshot/dash.png)
+
+---
+
+### Profile Details
+
+![Profile Details](./screenshot/profilepage.png)
+
+---
+
+### Mobile Responsive View
+
+![Mobile View](./screenshot/mobileview.png)
 
 ---
 
