@@ -129,7 +129,7 @@ src/
 │
 ├── store/
 │   ├── useSearchStore
-│   └── useSelectedProfilesStore
+│   └─useSelectedProfilesStore
 │
 ├── types/
 │

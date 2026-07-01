@@ -21,11 +21,12 @@ export const ProfileCard = memo(function ProfileCard({
   onProfileClick,
 }: ProfileCardProps) {
   const navigate = useNavigate();
-
-  const { addProfile, isSelected } = useSelectedProfilesStore();
+  const addProfile = useSelectedProfilesStore((state) => state.addProfile);
   const slug = profile.username ?? profile.handle ?? "";
 
-  const selected = isSelected(slug);
+  const selected = useSelectedProfilesStore((state) =>
+    state.isSelected(slug)
+  );
   const handleClick = () => {
     onProfileClick?.(slug);
     navigate(`/profile/${slug}?platform=${platform}`);

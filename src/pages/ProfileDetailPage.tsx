@@ -20,10 +20,10 @@ import type { Platform } from "@/types";
 export function ProfileDetailPage() {
   const { username } = useParams<{ username: string }>();
   const [searchParams] = useSearchParams();
-const platform =
-  (searchParams.get("platform") as Platform) || "instagram";
-  const [profileData, setProfileData] =
-    useState<ProfileDetailResponse | null>(null);
+  const platform = (searchParams.get("platform") as Platform) || "instagram";
+  const [profileData, setProfileData] = useState<ProfileDetailResponse | null>(
+    null,
+  );
 
   const [loading, setLoading] = useState(true);
 
@@ -49,9 +49,7 @@ const platform =
   if (loading) {
     return (
       <Layout title={`@${username}`}>
-        <p className="text-center text-slate-400 py-20">
-          Loading profile...
-        </p>
+        <p className="text-center text-slate-400 py-20">Loading profile...</p>
       </Layout>
     );
   }
@@ -60,14 +58,9 @@ const platform =
     return (
       <Layout title="Profile Not Found">
         <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-6">
-          <p className="text-red-300 mb-4">
-            Could not load profile details.
-          </p>
+          <p className="text-red-300 mb-4">Could not load profile details.</p>
 
-          <Link
-            to="/"
-            className="text-indigo-400 hover:text-indigo-300"
-          >
+          <Link to="/" className="text-indigo-400 hover:text-indigo-300">
             ← Back to Search
           </Link>
         </div>
@@ -89,23 +82,20 @@ const platform =
       </Link>
 
       <div className="grid gap-8 lg:grid-cols-3">
-
         {/* LEFT */}
 
         <div className="rounded-xl border border-slate-700 bg-slate-900 p-6">
-
           <img
-  src={user.picture}
-  alt={user.fullname}
-  onError={(e) => {
-    e.currentTarget.onerror = null;
-    e.currentTarget.src =
-      `https://ui-avatars.com/api/?name=${encodeURIComponent(
-        user.fullname
-      )}&background=4f46e5&color=fff&bold=true`;
-  }}
-  className="..."
-/>
+            src={user.picture}
+            alt={user.fullname}
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                user.fullname,
+              )}&background=4f46e5&color=fff&bold=true`;
+            }}
+            className="mx-auto h-40 w-40 rounded-full object-cover border border-slate-700"
+          />
 
           <h2 className="mt-5 text-center text-3xl font-bold text-white">
             {user.fullname}
@@ -129,7 +119,6 @@ const platform =
           )}
 
           <div className="mt-8 flex gap-3">
-
             <button
               onClick={() => addProfile(user)}
               disabled={selected}
@@ -152,17 +141,13 @@ const platform =
                 <ExternalLink size={18} />
               </a>
             )}
-
           </div>
-
         </div>
 
         {/* RIGHT */}
 
         <div className="lg:col-span-2">
-
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-
             <StatCard
               icon={<Users size={20} />}
               title="Followers"
@@ -199,19 +184,15 @@ const platform =
               />
             )}
 
-            {user.avg_views !== undefined &&
-              user.avg_views > 0 && (
-                <StatCard
-                  icon={<Eye size={20} />}
-                  title="Avg Views"
-                  value={formatFollowers(user.avg_views)}
-                />
-              )}
-
+            {user.avg_views !== undefined && user.avg_views > 0 && (
+              <StatCard
+                icon={<Eye size={20} />}
+                title="Avg Views"
+                value={formatFollowers(user.avg_views)}
+              />
+            )}
           </div>
-
         </div>
-
       </div>
     </Layout>
   );
@@ -226,17 +207,11 @@ interface CardProps {
 function StatCard({ icon, title, value }: CardProps) {
   return (
     <div className="rounded-xl border border-slate-700 bg-slate-900 p-5">
-
       <div className="text-indigo-400">{icon}</div>
 
-      <p className="mt-4 text-sm text-slate-400">
-        {title}
-      </p>
+      <p className="mt-4 text-sm text-slate-400">{title}</p>
 
-      <p className="mt-2 text-2xl font-bold text-white">
-        {value}
-      </p>
-
+      <p className="mt-2 text-2xl font-bold text-white">{value}</p>
     </div>
   );
 }

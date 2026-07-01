@@ -24,20 +24,21 @@ export function PlatformFilter({
             key={platform}
             type="button"
             onClick={() => onChange(platform)}
+            aria-pressed={selected === platform}
             className={`
-              rounded-full
-              px-5
-              py-2
-              text-sm
-              font-medium
-              transition-all
-              duration-200
-              ${
-                selected === platform
-                  ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
-                  : "border border-slate-700 bg-slate-900 text-slate-300 hover:border-indigo-500 hover:text-white"
-              }
-            `}
+    rounded-full
+    px-5
+    py-2
+    text-sm
+    font-medium
+    transition-all
+    duration-200
+    ${
+      selected === platform
+        ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
+        : "border border-slate-700 bg-slate-900 text-slate-300 hover:border-indigo-500 hover:text-white"
+    }
+  `}
           >
             {getPlatformLabel(platform)}
           </button>

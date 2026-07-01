@@ -1,5 +1,3 @@
-// import { useState } from "react";
-// import type { Platform } from "@/types";
 import { useSearchStore } from "@/store/useSearchStore";
 import { Layout } from "@/components/Layout";
 import { PlatformFilter } from "@/components/PlatformFilter";
