@@ -1,163 +1,242 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
+import {
+  Users,
+  Heart,
+  MessageCircle,
+  Eye,
+  FileText,
+  ExternalLink,
+} from "lucide-react";
+
 import { Layout } from "@/components/Layout";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import type { FullUserProfile, ProfileDetailResponse } from "@/types";
-import { formatEngagementRate } from "@/utils/formatters";
+import { formatFollowers, formatEngagementRate } from "@/utils/formatters";
 import { loadProfileByUsername } from "@/utils/profileLoader";
-
-function formatFollowersDetail(count: number) {
-  if (count >= 1000000) return (count / 1000000).toFixed(2) + "M";
-  if (count >= 1000) return (count / 1000).toFixed(1) + "K";
-  return String(count);
-}
+import { useSelectedProfilesStore } from "@/store/useSelectedProfilesStore";
+import type { Platform } from "@/types";
 
 export function ProfileDetailPage() {
   const { username } = useParams<{ username: string }>();
   const [searchParams] = useSearchParams();
-  const platform = searchParams.get("platform") || "unknown";
-  const [profileData, setProfileData] = useState<ProfileDetailResponse | null>(
-    null
-  );
-  const [loaded, setLoaded] = useState(false);
+const platform =
+  (searchParams.get("platform") as Platform) || "instagram";
+  const [profileData, setProfileData] =
+    useState<ProfileDetailResponse | null>(null);
+
+  const [loading, setLoading] = useState(true);
+
+  const { addProfile, isSelected } = useSelectedProfilesStore();
 
   useEffect(() => {
     if (!username) return;
 
-    loadProfileByUsername(username).then((data) => {
+    loadProfileByUsername(username, platform).then((data) => {
       setProfileData(data);
-      setLoaded(true);
+      setLoading(false);
     });
-  }, [username]);
+  }, [username, platform]);
 
   if (!username) {
     return (
-      <Layout>
-        <p>Invalid profile</p>
-        <Link to="/">Back</Link>
+      <Layout title="Invalid Profile">
+        <p className="text-red-400">Invalid profile.</p>
       </Layout>
     );
   }
 
-  if (!loaded) {
+  if (loading) {
     return (
       <Layout title={`@${username}`}>
-        <p className="text-gray-400">Loading...</p>
+        <p className="text-center text-slate-400 py-20">
+          Loading profile...
+        </p>
       </Layout>
     );
   }
 
   if (!profileData) {
     return (
-      <Layout title={`@${username}`}>
-        <p className="text-red-600 mb-4">
-          Could not load profile details for {username}
-        </p>
-        <Link to="/" className="text-blue-600 underline">
-          Back to search
-        </Link>
+      <Layout title="Profile Not Found">
+        <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-6">
+          <p className="text-red-300 mb-4">
+            Could not load profile details.
+          </p>
+
+          <Link
+            to="/"
+            className="text-indigo-400 hover:text-indigo-300"
+          >
+            ← Back to Search
+          </Link>
+        </div>
       </Layout>
     );
   }
 
   const user: FullUserProfile = profileData.data.user_profile;
 
+  const selected = isSelected(user.username ?? user.handle ?? "");
+
   return (
     <Layout title={user.fullname}>
-      <Link to="/" className="text-sm text-blue-600 mb-4 inline-block">
-        ← Back to search
+      <Link
+        to="/"
+        className="inline-block mb-6 text-indigo-400 hover:text-indigo-300"
+      >
+        ← Back to Search
       </Link>
 
-      <div className="flex gap-6 items-start text-left max-w-2xl mx-auto">
-        <img
-          src={user.picture}
-          className="w-24 h-24 rounded-full border"
-        />
-        <div className="flex-1">
-          <h2 className="text-xl font-bold">
+      <div className="grid gap-8 lg:grid-cols-3">
+
+        {/* LEFT */}
+
+        <div className="rounded-xl border border-slate-700 bg-slate-900 p-6">
+
+          <img
+  src={user.picture}
+  alt={user.fullname}
+  onError={(e) => {
+    e.currentTarget.onerror = null;
+    e.currentTarget.src =
+      `https://ui-avatars.com/api/?name=${encodeURIComponent(
+        user.fullname
+      )}&background=4f46e5&color=fff&bold=true`;
+  }}
+  className="..."
+/>
+
+          <h2 className="mt-5 text-center text-3xl font-bold text-white">
+            {user.fullname}
+          </h2>
+
+          <p className="mx-auto mt-4 max-w-3xl text-lg text-slate-400 leading-relaxed">
             @{user.username}
             <VerifiedBadge verified={user.is_verified} />
-          </h2>
-          <p className="text-gray-600">{user.fullname}</p>
-          <p className="text-xs text-gray-400 mt-1">Platform: {platform}</p>
+          </p>
 
-          {user.description && (
-            <p className="mt-3 text-sm text-gray-700">{user.description}</p>
-          )}
-
-          <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-            <div className="border p-2 rounded">
-              <div className="text-gray-500">Followers</div>
-              <div className="font-semibold">
-                {formatFollowersDetail(user.followers)}
-              </div>
-            </div>
-            <div className="border p-2 rounded">
-              <div className="text-gray-500">Engagement Rate</div>
-              <div className="font-semibold">
-                {user.engagement_rate !== undefined
-                  ? (user.engagement_rate * 10000).toFixed(2) + "%"
-                  : "N/A"}
-              </div>
-            </div>
-            {user.posts_count !== undefined && (
-              <div className="border p-2 rounded">
-                <div className="text-gray-500">Posts</div>
-                <div className="font-semibold">{user.posts_count}</div>
-              </div>
-            )}
-            {user.avg_likes !== undefined && (
-              <div className="border p-2 rounded">
-                <div className="text-gray-500">Avg Likes</div>
-                <div className="font-semibold">
-                  {formatFollowersDetail(user.avg_likes)}
-                </div>
-              </div>
-            )}
-            {user.avg_comments !== undefined && (
-              <div className="border p-2 rounded">
-                <div className="text-gray-500">Avg Comments</div>
-                <div className="font-semibold">{user.avg_comments}</div>
-              </div>
-            )}
-            {user.avg_views !== undefined && user.avg_views > 0 && (
-              <div className="border p-2 rounded">
-                <div className="text-gray-500">Avg Views</div>
-                <div className="font-semibold">
-                  {formatFollowersDetail(user.avg_views)}
-                </div>
-              </div>
-            )}
-            {user.engagements !== undefined && (
-              <div className="border p-2 rounded">
-                <div className="text-gray-500">Engagements</div>
-                <div className="font-semibold">
-                  {formatEngagementRate(user.engagement_rate)}
-                </div>
-              </div>
-            )}
+          <div className="mt-4 flex justify-center">
+            <span className="rounded-full bg-indigo-600 px-4 py-1 text-sm">
+              {platform}
+            </span>
           </div>
 
-          {user.url && (
-            <a
-              href={user.url}
-              target="_blank"
-              className="inline-block mt-4 text-blue-600 text-sm"
-            >
-              View on platform →
-            </a>
+          {user.description && (
+            <p className="mt-6 text-center text-slate-300">
+              {user.description}
+            </p>
           )}
 
-          {/* TODO: candidates must implement Add to List feature */}
-          {/* TODO: candidates must implement Add to List feature */}
-          <button
-            disabled
-            className="block mt-4 px-4 py-2 bg-gray-300 text-gray-500 rounded cursor-not-allowed"
-          >
-            Add to List
-          </button>
+          <div className="mt-8 flex gap-3">
+
+            <button
+              onClick={() => addProfile(user)}
+              disabled={selected}
+              className={`flex-1 rounded-lg py-3 font-medium transition ${
+                selected
+                  ? "bg-green-600 text-white"
+                  : "bg-indigo-600 hover:bg-indigo-700 text-white"
+              }`}
+            >
+              {selected ? "✓ Added" : "+ Add"}
+            </button>
+
+            {user.url && (
+              <a
+                href={user.url}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-lg border border-slate-700 px-4 flex items-center justify-center hover:bg-slate-800"
+              >
+                <ExternalLink size={18} />
+              </a>
+            )}
+
+          </div>
+
         </div>
+
+        {/* RIGHT */}
+
+        <div className="lg:col-span-2">
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+
+            <StatCard
+              icon={<Users size={20} />}
+              title="Followers"
+              value={formatFollowers(user.followers)}
+            />
+
+            <StatCard
+              icon={<Heart size={20} />}
+              title="Engagement"
+              value={formatEngagementRate(user.engagement_rate)}
+            />
+
+            {user.posts_count !== undefined && (
+              <StatCard
+                icon={<FileText size={20} />}
+                title="Posts"
+                value={String(user.posts_count)}
+              />
+            )}
+
+            {user.avg_likes !== undefined && (
+              <StatCard
+                icon={<Heart size={20} />}
+                title="Avg Likes"
+                value={formatFollowers(user.avg_likes)}
+              />
+            )}
+
+            {user.avg_comments !== undefined && (
+              <StatCard
+                icon={<MessageCircle size={20} />}
+                title="Avg Comments"
+                value={String(user.avg_comments)}
+              />
+            )}
+
+            {user.avg_views !== undefined &&
+              user.avg_views > 0 && (
+                <StatCard
+                  icon={<Eye size={20} />}
+                  title="Avg Views"
+                  value={formatFollowers(user.avg_views)}
+                />
+              )}
+
+          </div>
+
+        </div>
+
       </div>
     </Layout>
+  );
+}
+
+interface CardProps {
+  icon: React.ReactNode;
+  title: string;
+  value: string;
+}
+
+function StatCard({ icon, title, value }: CardProps) {
+  return (
+    <div className="rounded-xl border border-slate-700 bg-slate-900 p-5">
+
+      <div className="text-indigo-400">{icon}</div>
+
+      <p className="mt-4 text-sm text-slate-400">
+        {title}
+      </p>
+
+      <p className="mt-2 text-2xl font-bold text-white">
+        {value}
+      </p>
+
+    </div>
   );
 }

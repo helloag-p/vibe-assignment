@@ -25,9 +25,11 @@ export function SearchPage() {
 
   return (
     <Layout title="Find Influencers">
-      <p className="text-gray-500 mb-4 text-sm">
-        Browse top creators across social platforms
-      </p>
+     <div className="mb-4 flex justify-center">
+  <p className="text-sm text-slate-400">
+    Browse top creators across social platforms
+  </p>
+</div>
 
       <PlatformFilter
         selected={platform}
@@ -39,13 +41,16 @@ clearSearch();
         onSearchChange={setSearchQuery}
       />
 
-      <p className="text-xs text-gray-400 mb-2">
-        Showing {filtered.length} of {allProfiles.length} on {platform}
-      </p>
+      <div className="mb-6 flex justify-center">
+  <span className="rounded-full bg-slate-800 px-4 py-1 text-sm text-slate-300">
+    {filtered.length} creators found on{" "}
+    <span className="font-semibold capitalize">{platform}</span>
+  </span>
+</div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
 
-    <div className="lg:col-span-2">
+    <div className="xl:col-span-2">
         <ProfileList
         profiles={filtered}
         platform={platform}
