@@ -2,7 +2,7 @@
 
 A modern influencer search application built with **React**, **TypeScript**, **Vite**, **Tailwind CSS**, and **Zustand**.
 
-This project enhances the provided starter template by improving the UI/UX, replacing React Context with Zustand, fixing existing issues, implementing persistent profile selection, and optimizing the overall codebase.
+This project builds upon the provided starter template by improving the UI/UX, replacing React Context with Zustand, fixing existing issues, implementing persistent profile selection, and enhancing overall code quality and performance.
 
 ---
 
@@ -18,6 +18,7 @@ This project enhances the provided starter template by improving the UI/UX, repl
 - Fallback avatar for broken profile images
 - Improved routing and navigation
 - Responsive layout for desktop, tablet, and mobile devices
+- Accessible platform filter using ARIA attributes
 
 ---
 
@@ -27,7 +28,7 @@ This project enhances the provided starter template by improving the UI/UX, repl
 
 - Fixed profile navigation issues
 - Fixed username/handle inconsistencies across platforms
-- Fixed YouTube profiles missing usernames by generating fallback usernames
+- Normalized profile data to handle missing usernames and ensure consistent routing across platforms
 - Fixed broken profile image rendering using avatar fallback
 - Fixed search reset behavior when switching platforms
 - Fixed multiple TypeScript typing issues
@@ -59,7 +60,7 @@ Implemented:
 - Search state management
 - Platform state management
 - Selected profiles management
-- Persistent storage using Zustand persist middleware
+- Persistent state using Zustand Persist middleware and browser localStorage
 
 ---
 
@@ -89,7 +90,7 @@ Implemented complete functionality:
 ### 6. Performance Improvements
 
 - Memoized ProfileCard using React.memo
-- Reduced unnecessary re-renders
+- Reduced unnecessary re-renders using React.memo and Zustand selectors
 - Optimized profile extraction helpers
 - Zustand store minimizes component updates
 - Cleaner rendering logic
@@ -128,8 +129,8 @@ src/
 │   └── ProfileDetailPage
 │
 ├── store/
-│   ├── useSearchStore
-│   └─useSelectedProfilesStore
+│   ├── useSearchStore.ts
+│   └─useSelectedProfilesStore.ts
 │
 ├── types/
 │
@@ -179,7 +180,7 @@ If given more time, I would implement:
 Clone the repository
 
 ```bash
-git clone https://github.com/helloag-p/vibe-assignment
+git clone https://github.com/helloag-p/vibe-assignment.git
 ```
 
 Install dependencies
@@ -248,6 +249,6 @@ https://vibe-assignment.vercel.app/
 
 **Parv Agarwal**
 
-GitHub: https://github.com/helloag-p
+-GitHub: https://github.com/helloag-p
 
-LinkedIn: https://www.linkedin.com/in/parv-agarwal-09b042215/
+-LinkedIn: https://www.linkedin.com/in/parv-agarwal-09b042215/
