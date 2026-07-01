@@ -1,80 +1,237 @@
-# Wobb Frontend Assignment
+# Wobb Assignment – Influencer Search
 
-A starter influencer search application built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**. This project is intentionally left in a rough-but-working state for candidates to improve.
+A modern influencer search application built with **React**, **TypeScript**, **Vite**, **Tailwind CSS**, and **Zustand**.
 
-## Getting Started
+This project enhances the provided starter template by improving the UI/UX, replacing React Context with Zustand, fixing existing issues, implementing persistent profile selection, and optimizing the overall codebase.
+
+---
+
+## 🚀 Features
+
+- Search influencers by username or full name
+- Filter creators by platform (Instagram, YouTube, TikTok)
+- Detailed profile page for every creator
+- Persistent "Selected Profiles" list
+- Prevent duplicate profile selection
+- Remove profiles from the selected list
+- Modern responsive UI
+- Fallback avatar for broken profile images
+- Improved routing and navigation
+- Responsive layout for desktop, tablet, and mobile devices
+
+---
+
+## 🛠 Changes Made
+
+### 1. Bug Fixes
+
+- Fixed profile navigation issues
+- Fixed username/handle inconsistencies across platforms
+- Fixed YouTube profiles missing usernames by generating fallback usernames
+- Fixed broken profile image rendering using avatar fallback
+- Fixed search reset behavior when switching platforms
+- Fixed multiple TypeScript typing issues
+- Fixed ESLint warnings
+- Improved data extraction from JSON files
+
+---
+
+### 2. UI / UX Improvements
+
+- Redesigned the entire interface with a modern dark theme
+- Improved typography and spacing
+- Redesigned profile cards
+- Redesigned Selected Profiles panel
+- Improved search input styling
+- Improved platform selector buttons
+- Better visual hierarchy
+- Added hover states and smoother interactions
+- Improved responsive layout across different screen sizes
+
+---
+
+### 3. State Management
+
+Replaced React Context with Zustand.
+
+Implemented:
+
+- Search state management
+- Platform state management
+- Selected profiles management
+- Persistent storage using Zustand persist middleware
+
+---
+
+### 4. Selected Profiles Feature
+
+Implemented complete functionality:
+
+- Add profiles
+- Prevent duplicate entries
+- Remove profiles
+- Persistent selection after page refresh
+- Responsive selected profile sidebar
+
+---
+
+### 5. Code Quality Improvements
+
+- Better folder organization
+- Cleaner reusable components
+- Utility helper functions
+- Improved TypeScript types
+- Reduced duplicated code
+- Better separation of concerns
+
+---
+
+### 6. Performance Improvements
+
+- Memoized ProfileCard using React.memo
+- Reduced unnecessary re-renders
+- Optimized profile extraction helpers
+- Zustand store minimizes component updates
+- Cleaner rendering logic
+
+---
+
+## 📚 Libraries Used
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- Zustand
+- React Router DOM
+- Lucide React
+
+---
+
+## 📂 Project Structure
+
+```
+src/
+│
+├── assets/
+│
+├── components/
+│   ├── Layout
+│   ├── PlatformFilter
+│   ├── ProfileCard
+│   ├── ProfileList
+│   ├── SelectedProfiles
+│   └── VerifiedBadge
+│
+├── pages/
+│   ├── SearchPage
+│   └── ProfileDetailPage
+│
+├── store/
+│   ├── useSearchStore
+│   └── useSelectedProfilesStore
+│
+├── types/
+│
+├── utils/
+│   ├── dataHelpers
+│   ├── profileLoader
+│   └── formatters
+│
+└── main.tsx
+```
+
+---
+
+## 💭 Assumptions Made
+
+- Local JSON files are treated as the data source.
+- Some YouTube profile images are no longer publicly accessible (404). A fallback avatar is displayed instead.
+- Missing usernames are generated using available profile information to maintain consistent routing and searching.
+
+---
+
+## ⚖ Trade-offs
+
+- Used local JSON files instead of introducing a backend API.
+- Used browser localStorage (via Zustand persist) for selected profiles instead of a remote database.
+- Image fallback avatars are used when external image URLs are unavailable.
+
+---
+
+## 🔮 Future Improvements
+
+If given more time, I would implement:
+
+- Infinite scrolling
+- Skeleton loading states
+- Better accessibility (ARIA labels & keyboard navigation)
+- Unit and integration tests
+- Profile sorting options
+- Search debouncing
+- Dark/Light theme toggle
+- Better animations and micro-interactions
+
+---
+
+## 💻 Installation
+
+Clone the repository
+
+```bash
+git clone <repository-url>
+```
+
+Install dependencies
 
 ```bash
 npm install
+```
+
+Run the development server
+
+```bash
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) to view the app.
+---
 
-## What's Included
+## 🏗 Build
 
-- **Search / Dashboard** — filter influencers by platform (Instagram, YouTube, TikTok) and search by username or full name
-- **Profile Details** — click a profile to view extended data loaded from individual JSON files
-- **Routing** — `react-router-dom` with `/` (search) and `/profile/:username` (details)
+```bash
+npm run build
+```
 
-Sample data lives in:
+---
 
-- `src/assets/data/search/` — platform search results (10 profiles each)
-- `src/assets/data/profiles/` — detailed profile JSON per username
+## ✅ Lint
 
-## How to Submit
+```bash
+npm run lint
+```
 
-1. **Download or clone** this starter project to your machine.
-2. **Create a new repository** on your own GitHub account. Do not fork the original assignment repo — push your work to a repo you own.
-3. Complete the tasks below and push your changes to that repository.
-4. **Share the public GitHub repository URL** with us as your submission.
+---
 
-### Deadline (strict)
+## 🌐 Live Demo
 
-- **Due:** **2 July 2026, 2:00 PM IST** (Indian Standard Time, UTC+5:30)
-- **Any git commits made after this deadline will disqualify your submission.** We will only consider the repository state as of the deadline; late commits will not be reviewed.
-- Make sure your final work is pushed **before** the cutoff.
+> Add your Vercel deployment URL here after deployment.
 
-## AI Usage
+Example:
 
-You may use any AI tools (Cursor, ChatGPT, Claude, GitHub Copilot, etc.). We are evaluating your final solution and engineering decisions.
+```
+https://your-project.vercel.app
+```
 
-## Your Tasks
+---
 
-Complete the following as part of your submission:
+## 📸 Screenshots
 
-1. **Find and fix all bugs and quality issues** — the codebase contains intentional bugs and quality issues. Identify and resolve them.
+---
 
-2. **Completely redesign the UI/UX** — replace the basic layout with a polished, modern interface. Focus on usability, visual hierarchy, and delight.
+## 👨‍💻 Author
 
-3. **Replace React Context with Zustand** — when you implement state management for the selected list, use [Zustand](https://github.com/pmndrs/zustand) instead of React Context.
+**Parv Agarwal**
 
-4. **Implement "Select profile & Add to List"** — the disabled "Add to List" button is a stub. Build the full feature:
-   - Select / add profiles to a persistent list
-   - View and manage the selected list
-   - Handle duplicates appropriately
+GitHub: https://github.com/helloag-p
 
-5. **Improve code quality and project structure** — refactor as needed, add proper types, and follow React best practices.
-
-6. **Optimize performance** — apply sensible optimizations where appropriate.
-
-7. **Use any libraries you need** — you are not limited to the current stack. Choose tools that help you deliver a great result (UI kits, state managers, testing libraries, etc.).
-
-## Scripts
-
-| Command        | Description              |
-| -------------- | ------------------------ |
-| `npm run dev`  | Start development server |
-| `npm run build`| Production build         |
-| `npm run lint` | Run ESLint               |
-
-## Submission Notes
-
-- Document any assumptions or trade-offs in your README
-- Ensure `npm run build` passes before submitting
-- Focus on demonstrating your judgment — not every possible feature needs to be built, but the core assignment items should be addressed thoughtfully
-- Double-check that your repo is public (or that we have access) and that the link is included in your submission
-- Please make meaningful commits throughout your work. We may review your commit history.
-- **Bonus:** Deploying the app (e.g. Vercel, Netlify, GitHub Pages) is optional but will be considered a plus — include the live URL in your submission if you do
-
-Good luck!
+LinkedIn: https://www.linkedin.com/in/parv-agarwal-09b042215/
